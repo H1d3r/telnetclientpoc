@@ -1,0 +1,40 @@
+# Compiled binaries
+*.exe
+*.obj
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.res
+
+# Log files
+telnetclientpoc.log
+*.log
+
+# Hash files
+netntlmv2.hash
+ntlmv1.hash
+*.hash
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.ncb
+*.aps
+*.pch
+Debug/
+Release/
+x64/
+x86/
+ipch/
+
+# Other build artifacts
+*.o
+*.d
+*.a
+
+# OS-specific files
+.DS_Store
+Thumbs.db 

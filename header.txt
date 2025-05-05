@@ -1,0 +1,44 @@
+/* Microsoft Telnet Client MS-TNAP Server-Side Authentication Token Exploit
+ * ========================================================================
+ * This Proof of Concept (PoC) exploits a vulnerability in the MS-TNAP protocol
+ * used by the Microsoft Telnet Client. When a client connects to a Telnet server
+ * via telnet.exe or telnet:// URI hyperlinks and the MS-TNAP extension is detected,
+ * the client prompts the user with a warning:
+ *
+ * "You are about to send your password information to a remote computer in Internet zone.
+ * This might not be safe. Do you want to send anyway (y/n):"
+ *
+ * If the user responds "yes", this PoC completes the MS-TNAP process and extracts
+ * cryptographic authentication material, which can be used for NTLM relaying or
+ * offline cracking attacks. This application will write a telnetclientpoc.log with 
+ * NTLM trace data extracted from the connection. It will also write hashcat compatible
+ * NTLMv1/NetNTLMv2 responses to a file for offline hash cracking.
+ *
+ * Compile with:
+ * cl telnetclientpoc.cpp getopt.cpp stdafx.cpp /EHsc /MT ws2_32.lib secur32.lib
+ *
+ * Vulnerable Clients:
+ *   The Microsoft Telnet Client with MS-TNAP extension support is impacted on the following host systems:
+ *   - Windows NT 4.0
+ *   - Windows 2000
+ *   - Windows XP
+ *   - Windows Server 2003
+ *   - Windows Server 2003 R2
+ *   - Windows Vista
+ *   - Windows Server 2008
+ *   - Windows Server 2008 R2
+ *   - Windows 7
+ *   - Windows Server 2012
+ *   - Windows Server 2012 R2
+ *   - Windows 8
+ *   - Windows 8.1
+ *   - Windows 10
+ *   - Windows Server 2016
+ *   - Windows Server 2019
+ *   - Windows Server 2022
+ *   - Windows 11
+ *   - Windows Server 2025
+ *
+ * Hacker Fantastic
+ * https://hacker.house
+ */
