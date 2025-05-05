@@ -3,16 +3,22 @@
  * This Proof of Concept (PoC) exploits a vulnerability in the MS-TNAP protocol
  * used by the Microsoft Telnet Client. When a client connects to a Telnet server
  * via telnet.exe or telnet:// URI hyperlinks and the MS-TNAP extension is detected,
- * the client prompts the user with a warning:
+ * the client may send authentication credentials to the server.
+ *
+ * For servers in untrusted zones (like Internet zone), the client prompts the user with a warning:
  *
  * "You are about to send your password information to a remote computer in Internet zone.
  * This might not be safe. Do you want to send anyway (y/n):"
  *
- * If the user responds "yes", this PoC completes the MS-TNAP process and extracts
- * cryptographic authentication material, which can be used for NTLM relaying or
- * offline cracking attacks. This application will write a telnetclientpoc.log with 
- * NTLM trace data extracted from the connection. It will also write hashcat compatible
- * NetNTLMv2 responses to a file for offline hash cracking.
+ * However, for servers in trusted zones (Intranet zone or Trusted Sites), or when zone
+ * policies are configured for silent authentication, credentials can be sent automatically
+ * WITHOUT ANY PROMPT, making this vulnerability even more dangerous in enterprise environments.
+ *
+ * If the user responds "yes" to the prompt (or if no prompt is shown due to zone settings),
+ * this PoC completes the MS-TNAP process and extracts cryptographic authentication material, 
+ * which can be used for NTLM relaying or offline cracking attacks. This application will 
+ * write a telnetclientpoc.log with NTLM trace data extracted from the connection. It will 
+ * also write hashcat compatible NetNTLMv2 responses to a file for offline hash cracking.
  *
  * Compile with:
  * cl telnetclientpoc.cpp getopt.cpp stdafx.cpp /EHsc /MT ws2_32.lib secur32.lib

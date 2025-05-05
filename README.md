@@ -11,14 +11,26 @@ The PoC completes the MS-TNAP process and captures NTLM authentication data, whi
 
 ## Vulnerability Details
 
-The Microsoft Telnet Client with MS-TNAP extension will prompt users with a security warning:
+The Microsoft Telnet Client with MS-TNAP extension will prompt users with a security warning when connecting to servers in untrusted zones (like Internet zone):
 
 ```
 "You are about to send your password information to a remote computer in Internet zone.
 This might not be safe. Do you want to send anyway (y/n):"
 ```
 
-If the user responds "yes", authentication material is sent to the server. An attacker can leverage this vulnerability in phishing attacks by enticing victims to click on malicious `telnet://` URI links.
+However, for servers in trusted zones (such as Intranet zone), or when the system's zone policy is configured for silent authentication, no warning will be displayed and credentials will be sent automatically.
+
+If the user responds "yes" to the prompt (or if no prompt is shown due to zone settings), authentication material is sent to the server. An attacker can leverage this vulnerability in phishing attacks by enticing victims to click on malicious `telnet://` URI links.
+
+### Security Zone Behavior
+
+When connecting to a Telnet server, Windows checks the server against security zones:
+
+- **Internet Zone**: Prompts user with warning before sending credentials
+- **Intranet Zone**: May silently send credentials without prompting
+- **Trusted Sites**: May silently send credentials without prompting
+
+This behavior is particularly dangerous in enterprise environments where many internal servers are automatically placed in the Intranet zone, potentially allowing silent credential theft.
 
 ### Affected Systems
 
@@ -191,8 +203,8 @@ On recent Windows systems, additional security prompts may appear when clicking 
 ## Errata
 
 This PoC creates NetNTLMv2 hashcat formatted output, there are bugs with the NetNTLMv1 hash output. When supplying a custom domain or workstation (-d/-s), only the first 6 bytes
-are used in the NTLM type 2 message (this matters in relay attacks but is less important in capturing hashes), changing the length of these strings requires fixing the NTLM 
-type 2 packet to handle the longer strings. The full NTLM data is always stored in the telnetclientpoc.log for you to construct hashcat output manually or to use in relay situations. 
+are used in the NTLM type 2 message (this matters in relay attacks but is less important in capturing hashes), changing the length of these strings requires fixing the NTLM
+type 2 packet to handle the longer strings. The full NTLM data is always stored in the telnetclientpoc.log for you to construct hashcat output manually or to use in relay situations.
 
 ## Credits
 
