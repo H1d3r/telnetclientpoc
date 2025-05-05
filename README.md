@@ -188,6 +188,12 @@ This exploit demonstrates how an attacker could:
 
 On recent Windows systems, additional security prompts may appear when clicking `telnet://` URIs in browsers, requiring the user to confirm execution of telnet.exe.
 
+## Errata
+
+This PoC creates NetNTLMv2 hashcat formatted output, there are bugs with the NetNTLMv1 output. When supplying a custom domain or workstation (-d/-s), only the first 6 bytes
+are used in the NTLM type 2 message (not that it typically matters as you do not need these), changing the length of these strings requires fixing the NTLM type 2 packet to
+for longer strings. The full NTLM data is always stored in the telnetclientpoc.log for you to construct hashcat output manually or to use in relay situations. 
+
 ## Attribution
 
 Developed by Hacker Fantastic  
