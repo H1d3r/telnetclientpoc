@@ -14,6 +14,13 @@
  * policies are configured for silent authentication, credentials can be sent automatically
  * WITHOUT ANY PROMPT, making this vulnerability even more dangerous in enterprise environments.
  *
+ * This issue is particularly severe when hosts are added to trusted zones without protocol
+ * specifiers (e.g., "192.168.1.1" rather than "http://192.168.1.1"). When a host is added
+ * without a protocol specifier, Windows applies the trust setting to ALL protocols for that
+ * host, including Telnet. Many organizations commonly configure their Intranet Zone or
+ * Trusted Sites Zone with IP addresses or hostnames without protocol specifiers, which
+ * inadvertently enables silent credential theft via Telnet connections.
+ *
  * If the user responds "yes" to the prompt (or if no prompt is shown due to zone settings),
  * this PoC completes the MS-TNAP process and extracts cryptographic authentication material, 
  * which can be used for NTLM relaying or offline cracking attacks. This application will 

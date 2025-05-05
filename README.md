@@ -30,7 +30,9 @@ When connecting to a Telnet server, Windows checks the server against security z
 - **Intranet Zone**: May silently send credentials without prompting
 - **Trusted Sites**: May silently send credentials without prompting
 
-This behavior is particularly dangerous in enterprise environments where many internal servers are automatically placed in the Intranet zone, potentially allowing silent credential theft.
+This behavior is particularly dangerous when hosts are added to the Intranet Zone or Trusted Sites Zone without protocol specifiers. For example, adding an IP address like `192.168.1.1` instead of `http://192.168.1.1` will apply the trust setting to all protocols (HTTP, HTTPS, Telnet, etc.) for that host. Many organizations add internal IP ranges to trusted zones without protocol specifiers, inadvertently allowing silent credential theft via Telnet and other protocols.
+
+Windows checks for zone trust using the combination of protocol and host (e.g., `telnet://192.168.1.1`), so administrators should use protocol-specific entries when configuring trusted zones to limit exposure.
 
 ### Affected Systems
 
