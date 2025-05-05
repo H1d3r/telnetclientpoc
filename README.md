@@ -60,7 +60,7 @@ Server listening on port 23...
 When a client connects, the application:
 
 1. Logs detailed NTLM authentication steps to `telnetclientpoc.log`
-2. Captures NetNTLMv2 hashes in `netntlmv2.hash` file
+2. Captures NetNTLMv2 hashes in `netntlmv2.hash` file & NTLMv1 in `ntlmv1.hash`
 3. Provides detailed debug output on the console
 
 ## Example Output
@@ -141,7 +141,7 @@ Connection closed.
 
 ## Password Cracking with Hashcat
 
-Once you've captured NetNTLMv2.hash files, you can use hashcat to crack them:
+Once you've captured netntlmv2.hash files, you can use hashcat to crack them:
 
 ```
 hashcat -m 5600 -a 0 -O netntlmv2.hash passwords.txt
@@ -194,10 +194,9 @@ This PoC creates NetNTLMv2 hashcat formatted output, there are bugs with the Net
 are used in the NTLM type 2 message (this matters in relay attacks but is less important in capturing hashes), changing the length of these strings requires fixing the NTLM 
 type 2 packet to handle the longer strings. The full NTLM data is always stored in the telnetclientpoc.log for you to construct hashcat output manually or to use in relay situations. 
 
-## Attribution
+## Credits
 
-Developed by Hacker Fantastic  
-https://hacker.house
+Developed by Hacker Fantastic, https://hacker.house
 
 ## License
 
