@@ -1,4 +1,4 @@
-# MS-TNAP Telnet Client Authentication Extraction
+# Microsoft Telnet Client MS-TNAP Server-Side Authentication Token Exploit
 
 ## Overview
 
