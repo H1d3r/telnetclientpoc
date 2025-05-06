@@ -2,7 +2,7 @@
 
 ## Overview
 
-This proof-of-concept demonstrates a vulnerability in the Microsoft Telnet Client's MS-TNAP authentication protocol. When a client connects to a malicious Telnet server via `telnet.exe` or `telnet://` URI hyperlinks, and the MS-TNAP extension is detected, the server can extract authentication material from the client. If the exploit is run by a host in the Intranet or Trusted Zone, the credentials are sent automatically without prompting, making this practical for Red Team uses. 
+This proof-of-concept demonstrates a vulnerability in the Microsoft Telnet Client's MS-TNAP authentication protocol. When a client connects to a malicious Telnet server via `telnet.exe` or `telnet://` URI hyperlinks, and the MS-TNAP extension is detected, the server can extract authentication material from the client. If the exploit is run by a host in the Intranet or Trusted Zone, the credentials are sent automatically without prompting, making this practical for Red Team uses.
 
 The PoC completes the MS-TNAP process and captures NTLM authentication data, which can be used for:
 
@@ -38,25 +38,25 @@ Windows checks for zone trust using the combination of protocol and host (e.g., 
 
 All Windows versions when the Microsoft Telnet Client is installed:
 
- * Windows NT 4.0
- * Windows 2000
- * Windows XP
- * Windows Server 2003
- * Windows Server 2003 R2
- * Windows Vista
- * Windows Server 2008
- * Windows Server 2008 R2
- * Windows 7
- * Windows Server 2012
- * Windows Server 2012 R2
- * Windows 8
- * Windows 8.1
- * Windows 10
- * Windows Server 2016
- * Windows Server 2019
- * Windows Server 2022
- * Windows 11
- * Windows Server 2025
+- Windows NT 4.0
+- Windows 2000
+- Windows XP
+- Windows Server 2003
+- Windows Server 2003 R2
+- Windows Vista
+- Windows Server 2008
+- Windows Server 2008 R2
+- Windows 7
+- Windows Server 2012
+- Windows Server 2012 R2
+- Windows 8
+- Windows 8.1
+- Windows 10
+- Windows Server 2016
+- Windows Server 2019
+- Windows Server 2022
+- Windows 11
+- Windows Server 2025
 
 ## Usage
 
@@ -216,7 +216,7 @@ This exploit demonstrates how an attacker could:
 4. Captured hashes can be used for offline password cracking or relay attacks
 
 The telnet:// URI handler can be embedded in places where FileOpen type operations are performed, such as within .LNK files
-for exploitation purposes. 
+for exploitation purposes.
 
 ## Notes
 
@@ -227,6 +227,31 @@ On recent Windows systems, additional prompts may appear when clicking `telnet:/
 This PoC creates NetNTLMv2 hashcat formatted output, there are bugs with the NetNTLMv1 hash output. When supplying a custom domain or workstation (-d/-s), only the first 6 bytes
 are used in the NTLM type 2 message (this matters in relay attacks but is less important in capturing hashes), changing the length of these strings requires fixing the NTLM
 type 2 packet to handle the longer strings. The full NTLM data is always stored in the telnetclientpoc.log for you to construct hashcat output manually or to use in relay situations.
+
+## Mitigation
+
+### Disable NTLM Authentication in Telnet Client
+
+It is possible to disable NTLM authentication in the Telnet client on a per-user basis by setting the following registry key:
+
+```
+HKEY_CURRENT_USER\Software\Microsoft\Telnet\NTLM = 0
+```
+
+This will disable MS-TNAP support entirely, preventing the exploitation of this issue. The registry value should be set as a DWORD type.
+
+You can set this via command line with:
+
+```
+reg add "HKCU\Software\Microsoft\Telnet" /v NTLM /t REG_DWORD /d 0 /f
+```
+
+### Best Practice Recommendations
+
+1. Disable the Telnet client feature on Windows systems
+2. Use SSH instead of Telnet for secure remote access
+3. Review security zone settings and use protocol-specific entries
+4. Set the above registry key to disable NTLM in Telnet if the client must remain enabled
 
 ## Credits
 
