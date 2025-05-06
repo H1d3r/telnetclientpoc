@@ -2,7 +2,7 @@
 
 ## Overview
 
-This proof-of-concept demonstrates a vulnerability in the Microsoft Telnet Client's MS-TNAP authentication protocol. When a client connects to a malicious Telnet server via `telnet.exe` or `telnet://` URI hyperlinks, and the MS-TNAP extension is detected, the server can extract authentication material from the client.
+This proof-of-concept demonstrates a vulnerability in the Microsoft Telnet Client's MS-TNAP authentication protocol. When a client connects to a malicious Telnet server via `telnet.exe` or `telnet://` URI hyperlinks, and the MS-TNAP extension is detected, the server can extract authentication material from the client. If the exploit is run by a host in the Intranet or Trusted Zone, the credentials are sent automatically without prompting, making this practical for Red Team uses. 
 
 The PoC completes the MS-TNAP process and captures NTLM authentication data, which can be used for:
 
@@ -36,10 +36,27 @@ Windows checks for zone trust using the combination of protocol and host (e.g., 
 
 ### Affected Systems
 
-All Windows versions with the Microsoft Telnet Client installed:
+All Windows versions when the Microsoft Telnet Client is installed:
 
-- Windows NT 4.0 through Windows 11
-- Windows Server 2003 through Windows Server 2025
+ * Windows NT 4.0
+ * Windows 2000
+ * Windows XP
+ * Windows Server 2003
+ * Windows Server 2003 R2
+ * Windows Vista
+ * Windows Server 2008
+ * Windows Server 2008 R2
+ * Windows 7
+ * Windows Server 2012
+ * Windows Server 2012 R2
+ * Windows 8
+ * Windows 8.1
+ * Windows 10
+ * Windows Server 2016
+ * Windows Server 2019
+ * Windows Server 2022
+ * Windows 11
+ * Windows Server 2025
 
 ## Usage
 
@@ -92,16 +109,16 @@ NTLM signature found at position: 12
 NTLM Type 1 Message:
   Signature: NTLMSSP
   Flags: 0xE2088297
-    - Negotiate Unicode
-    - Negotiate OEM
-    - Request Target
-    - Negotiate Sign
-    - Negotiate Lan Manager Key
-    - Negotiate NTLM
-    - Negotiate Always Sign
-    - Negotiate Extended Session Security
-    - Negotiate Key Exchange
-    - Negotiate 56
+  Negotiate Unicode
+  Negotiate OEM
+  Request Target
+  Negotiate Sign
+  Negotiate Lan Manager Key
+  Negotiate NTLM
+  Negotiate Always Sign
+  Negotiate Extended Session Security
+  Negotiate Key Exchange
+  Negotiate 56
   Domain:
   Workstation:
   OS Version: 10.0 (Build 20348)
@@ -119,10 +136,10 @@ NTLM signature found at position: 12
 NTLM Type 2 Message:
   Signature: NTLMSSP
   Flags: 0xE28A8215
-    - Negotiate Unicode
-    - Request Target
-    - Negotiate NTLM
-    - Negotiate Extended Session Security
+  Negotiate Unicode
+  Request Target
+  Negotiate NTLM
+  Negotiate Extended Session Security
   Challenge: 31 7C 02 AC 07 8A 3C 43
   Target Name: WIN2K3
   Target Info:
@@ -137,9 +154,9 @@ NTLM signature found at position: 12
 NTLM Type 3 Message:
   Signature: NTLMSSP
   Flags: 0xE2888215
-    - Negotiate Unicode
-    - Negotiate NTLM
-    - Negotiate Extended Session Security
+  Negotiate Unicode
+  Negotiate NTLM
+  Negotiate Extended Session Security
   Domain: WIN-ROTQIHG6IIG
   Username: Administrator
   Host: WIN-ROTQIHG6IIG
@@ -195,12 +212,15 @@ This exploit demonstrates how an attacker could:
 
 1. Create a phishing email with a malicious `telnet://` URI
 2. User clicks the link, launching the telnet client
-3. If the user accepts the security prompt, the server captures authentication material
+3. The server captures authentication material from the client
 4. Captured hashes can be used for offline password cracking or relay attacks
+
+The telnet:// URI handler can be embedded in places where FileOpen type operations are performed, such as within .LNK files
+for exploitation purposes. 
 
 ## Notes
 
-On recent Windows systems, additional security prompts may appear when clicking `telnet://` URIs in browsers, requiring the user to confirm execution of telnet.exe.
+On recent Windows systems, additional prompts may appear when clicking `telnet://` URIs in browsers, requiring the user to confirm execution of telnet.exe.
 
 ## Errata
 

@@ -3,7 +3,8 @@
  * This Proof of Concept (PoC) exploits a vulnerability in the MS-TNAP protocol
  * used by the Microsoft Telnet Client. When a client connects to a Telnet server
  * via telnet.exe or telnet:// URI hyperlinks and the MS-TNAP extension is detected,
- * the client may send authentication credentials to the server.
+ * the client may send authentication credentials to the server. This attack can also
+ * be embedded in .LNK files or similar.
  *
  * For servers in untrusted zones (like Internet zone), the client prompts the user with a warning:
  *
