@@ -259,4 +259,4 @@ Developed by Hacker Fantastic, https://hacker.house
 
 ## License
 
-These files are available under a Attribution-NonCommercial-NoDerivatives 4.0 International license.
+These files are available under the 3-clause BSD license.
